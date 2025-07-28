@@ -1,6 +1,7 @@
 package com.financialtargets.incomes.presentation.exception;
 
 import com.financialtargets.incomes.domain.exception.IncomeException;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -69,6 +70,17 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleIncomeException(IncomeException ex) {
         ErrorResponse response = new ErrorResponse(
                 ex.status.value(),
+                ex.getMessage()
+        );
+
+        return ResponseEntity.status(response.status()).body(response);
+    }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleEntityNotFoundException(EntityNotFoundException ex) {
+
+        ErrorResponse response = new ErrorResponse(
+                HttpStatus.NOT_FOUND.value(),
                 ex.getMessage()
         );
 
