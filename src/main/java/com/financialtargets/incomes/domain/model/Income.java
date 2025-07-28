@@ -1,15 +1,16 @@
 package com.financialtargets.incomes.domain.model;
 
-import com.financialtargets.incomes.application.dto.IncomeCreateDTO;
 import com.financialtargets.incomes.application.utils.DateUtil;
 import com.financialtargets.incomes.domain.enums.IncomeStatuses;
 import com.financialtargets.incomes.domain.enums.IncomeTypes;
+import com.financialtargets.incomes.application.dto.IncomeCreateDTO;
 import lombok.Data;
 
 import java.time.Instant;
 
 @Data
 public class Income {
+
     private Long id;
 
     private Long userId;

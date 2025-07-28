@@ -1,14 +1,14 @@
 package com.financialtargets.incomes.application.service.impl;
 
-import com.financialtargets.incomes.application.dto.IncomeCreateDTO;
 import com.financialtargets.incomes.application.service.IncomesService;
 import com.financialtargets.incomes.application.utils.DateUtil;
-import com.financialtargets.incomes.domain.constants.DateConstants;
 import com.financialtargets.incomes.domain.enums.IncomeStatuses;
 import com.financialtargets.incomes.domain.enums.IncomeTypes;
 import com.financialtargets.incomes.domain.exception.IncomeException;
 import com.financialtargets.incomes.domain.mapper.IncomesMapper;
+import com.financialtargets.incomes.application.dto.IncomeCreateDTO;
 import com.financialtargets.incomes.domain.model.Income;
+import com.financialtargets.incomes.domain.model.IncomesSummary;
 import com.financialtargets.incomes.infrastructure.entitiy.AccountEntity;
 import com.financialtargets.incomes.infrastructure.entitiy.IncomeStatusesEntity;
 import com.financialtargets.incomes.infrastructure.entitiy.IncomeTypesEntity;
@@ -24,9 +24,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -73,8 +70,29 @@ public class IncomesServiceImpl implements IncomesService {
         Instant start = DateUtil.getStartDateByFilter(month, year);
         Instant end = DateUtil.getEndDateByFilter(month, year);
 
-        List<IncomesEntity> incomesEntityList = incomeRepository.findByDateBetween(start, end).stream().toList();
+        List<IncomesEntity> incomes = incomeRepository.findByDateBetween(start, end).stream().toList();
 
-        return IncomesMapper.toModelList(incomesEntityList);
+        return IncomesMapper.toModelList(incomes);
+    }
+
+    @Override
+    public IncomesSummary getSummary(String month, String year) {
+        Instant start = DateUtil.getStartDateByFilter(month, year);
+        Instant end = DateUtil.getEndDateByFilter(month, year);
+
+        List<Income> incomes = IncomesMapper.toModelList(incomeRepository.findByDateBetween(start, end).stream().toList());
+
+        List<Income> expectedIncomes = incomes.stream().filter(i -> i.getStatus() == IncomeStatuses.PLANNED).toList();
+        List<Income> receivedIncomes = incomes.stream().filter(i -> i.getStatus() == IncomeStatuses.EFFECTIVE).toList();
+
+        IncomesSummary incomesSummary = new IncomesSummary();
+
+        incomesSummary.setCountExpected(expectedIncomes.size());
+        incomesSummary.setTotalExpected(expectedIncomes.stream().reduce(0.0F, (total, income) -> total + income.getAmount(), Float::sum));
+
+        incomesSummary.setCountReceived(receivedIncomes.size());
+        incomesSummary.setTotalReceived(receivedIncomes.stream().reduce(0.0F, (total, income) -> total + income.getAmount(), Float::sum));
+
+        return incomesSummary;
     }
 }

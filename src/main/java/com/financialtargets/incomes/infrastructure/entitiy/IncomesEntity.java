@@ -18,7 +18,7 @@ import java.time.Instant;
 
 @NoArgsConstructor
 @Data
-@Table(name = "incomes")
+@Table(name = "com/financialtargets/incomes")
 @Entity
 public class IncomesEntity {
     @Id

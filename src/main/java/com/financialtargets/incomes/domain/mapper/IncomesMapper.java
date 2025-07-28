@@ -1,11 +1,13 @@
 package com.financialtargets.incomes.domain.mapper;
 
-import com.financialtargets.incomes.application.dto.IncomeDTO;
+import com.financialtargets.incomes.application.dto.IncomesSummaryDTO;
 import com.financialtargets.incomes.application.utils.AmountUtil;
 import com.financialtargets.incomes.application.utils.DateUtil;
 import com.financialtargets.incomes.domain.enums.IncomeStatuses;
 import com.financialtargets.incomes.domain.enums.IncomeTypes;
+import com.financialtargets.incomes.application.dto.IncomeDTO;
 import com.financialtargets.incomes.domain.model.Income;
+import com.financialtargets.incomes.domain.model.IncomesSummary;
 import com.financialtargets.incomes.infrastructure.entitiy.IncomesEntity;
 import lombok.experimental.UtilityClass;
 
@@ -52,5 +54,14 @@ public class IncomesMapper {
 
     public List<IncomeDTO> toListDTO(List<Income> incomes) {
         return incomes.stream().map(IncomesMapper::toDTO).toList();
+    }
+
+    public IncomesSummaryDTO mapSummaryDTO(IncomesSummary incomesSummary) {
+        return IncomesSummaryDTO.builder()
+                .countExpected(incomesSummary.getCountExpected())
+                .totalExpected(AmountUtil.formatAmount(incomesSummary.getTotalExpected()))
+                .countReceived(incomesSummary.getCountReceived())
+                .totalReceived(AmountUtil.formatAmount(incomesSummary.getTotalReceived()))
+                .build();
     }
 }

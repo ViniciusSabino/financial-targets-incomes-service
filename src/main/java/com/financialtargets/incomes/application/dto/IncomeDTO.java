@@ -2,36 +2,39 @@ package com.financialtargets.incomes.application.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
+import lombok.Data;
 
 @Builder
+@Data
 public class IncomeDTO {
+
         @JsonProperty("id")
-        Long id;
+        private Long id;
 
         @JsonProperty("userId")
-        Long userId;
+        private Long userId;
 
         @JsonProperty("accountName")
-        String accountName;
+        private String accountName;
 
         @JsonProperty("type")
-        String type;
+        private String type;
 
         @JsonProperty("status")
-        String status;
+        private String status;
 
         @JsonProperty("amount")
-        String amount;
+        private String amount;
 
         @JsonProperty("date")
-        String date;
+        private String date;
 
         @JsonProperty("description")
-        String description;
+        private String description;
 
         @JsonProperty("createdAt")
-        String createdAt;
+        private String createdAt;
 
         @JsonProperty("updatedAt")
-        String updatedAt;
+        private String updatedAt;
 }
