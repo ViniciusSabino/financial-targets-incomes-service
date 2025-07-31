@@ -8,8 +8,14 @@ public record IncomesSummaryDTO(
         @JsonProperty("totalExpected")
         String totalExpected,
 
+        @JsonProperty("totalExpectedValue")
+        Float totalExpectedValue,
+
         @JsonProperty("totalReceived")
         String totalReceived,
+
+        @JsonProperty("totalReceivedValue")
+        Float totalReceivedValue,
 
         @JsonProperty("countExpected")
         Integer countExpected,

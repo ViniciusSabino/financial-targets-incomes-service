@@ -22,9 +22,6 @@ public class IncomeDTO {
         @JsonProperty("status")
         private String status;
 
-        @JsonProperty("value")
-        private Float value;
-
         @JsonProperty("amount")
         private String amount;
 

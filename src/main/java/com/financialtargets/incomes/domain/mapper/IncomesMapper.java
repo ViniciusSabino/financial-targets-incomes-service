@@ -44,7 +44,6 @@ public class IncomesMapper {
                 .accountName(income.getAccountName())
                 .type(IncomeTypes.getLabelById(income.getType().getId()))
                 .status(IncomeStatuses.getLabelById(income.getStatus().getId()))
-                .value(income.getAmount())
                 .amount(AmountUtil.formatAmount(income.getAmount()))
                 .date(DateUtil.formatDate(income.getDate()))
                 .description(income.getDescription())
@@ -61,8 +60,10 @@ public class IncomesMapper {
         return IncomesSummaryDTO.builder()
                 .countExpected(incomesSummary.getCountExpected())
                 .totalExpected(AmountUtil.formatAmount(incomesSummary.getTotalExpected()))
+                .totalExpectedValue(incomesSummary.getTotalExpected())
                 .countReceived(incomesSummary.getCountReceived())
                 .totalReceived(AmountUtil.formatAmount(incomesSummary.getTotalReceived()))
+                .totalReceivedValue(incomesSummary.getTotalReceived())
                 .build();
     }
 }
