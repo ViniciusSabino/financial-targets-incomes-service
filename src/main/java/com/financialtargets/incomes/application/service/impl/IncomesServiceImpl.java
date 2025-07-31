@@ -37,7 +37,7 @@ public class IncomesServiceImpl implements IncomesService {
     @Override
     public Income create(IncomeCreateDTO incomeCreateDTO) throws IncomeException {
         if (!IncomeTypes.isValidType(incomeCreateDTO.type()))
-            throw new IncomeException("Tipo incorreto para a entrada", HttpStatus.BAD_REQUEST);
+            throw new IncomeException("Tipo incorreto para a entrada");
 
         Income income = new Income(incomeCreateDTO);
 
