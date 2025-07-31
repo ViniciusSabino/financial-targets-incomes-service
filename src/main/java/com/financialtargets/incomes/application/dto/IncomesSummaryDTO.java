@@ -4,8 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 
 @Builder
-public record IncomesSummaryDTO (
-
+public record IncomesSummaryDTO(
         @JsonProperty("totalExpected")
         String totalExpected,
 
@@ -17,5 +16,6 @@ public record IncomesSummaryDTO (
 
         @JsonProperty("countReceived")
         Integer countReceived
-) {}
+) {
+}
 

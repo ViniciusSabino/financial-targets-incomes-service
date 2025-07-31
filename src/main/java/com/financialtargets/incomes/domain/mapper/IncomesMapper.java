@@ -16,24 +16,24 @@ import java.util.List;
 @UtilityClass
 public class IncomesMapper {
 
-    public Income toModel(IncomesEntity incomeEntity) {
+    public Income toModel(IncomesEntity entity) {
         Income income = new Income();
 
-        income.setId(incomeEntity.getId());
-        income.setUserId(incomeEntity.getUser().getId());
-        income.setAccountName(incomeEntity.getAccount().getName());
-        income.setAmount(incomeEntity.getAmount());
-        income.setDate(incomeEntity.getDate());
-        income.setDescription(incomeEntity.getDescription());
-        income.setCreatedAt(incomeEntity.getCreatedAt());
-        income.setUpdatedAt(incomeEntity.getUpdatedAt());
-        income.setStatus(incomeEntity.getIncomeStatus().getId());
-        income.setType(incomeEntity.getIncomeType().getId());
+        income.setId(entity.getId());
+        income.setUserId(entity.getUser().getId());
+        income.setAccountName(entity.getAccount().getName());
+        income.setAmount(entity.getAmount());
+        income.setDate(entity.getDate());
+        income.setDescription(entity.getDescription());
+        income.setCreatedAt(entity.getCreatedAt());
+        income.setUpdatedAt(entity.getUpdatedAt());
+        income.setStatus(entity.getIncomeStatus().getId());
+        income.setType(IncomeTypes.getTypeById(entity.getIncomeType().getId()));
 
         return income;
     }
 
-    public List<Income> toModelList(List<IncomesEntity> incomesEntityList) {
+    public List<Income> toListModel(List<IncomesEntity> incomesEntityList) {
         return incomesEntityList.stream().map(IncomesMapper::toModel).toList();
     }
 
@@ -44,6 +44,7 @@ public class IncomesMapper {
                 .accountName(income.getAccountName())
                 .type(IncomeTypes.getLabelById(income.getType().getId()))
                 .status(IncomeStatuses.getLabelById(income.getStatus().getId()))
+                .value(income.getAmount())
                 .amount(AmountUtil.formatAmount(income.getAmount()))
                 .date(DateUtil.formatDate(income.getDate()))
                 .description(income.getDescription())

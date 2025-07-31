@@ -6,12 +6,12 @@ spring:
     username: postgres
     password: G~w<Yq=&fU;93kNLZ
 
-    server:
-      port: 8080
-      servlet:
-        contextPath: /api
+server:
+  port: 8080
+  servlet:
+    contextPath: /api
 
-    info:
-      app:
-        name: Financial Targets Incomes Service
-        version: '0.0.1-SNAPSHOT'
+  info:
+    app:
+      name: Financial Targets Incomes Service
+      version: '0.0.1-SNAPSHOT'

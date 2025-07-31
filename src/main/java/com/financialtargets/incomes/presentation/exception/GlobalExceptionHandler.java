@@ -19,18 +19,11 @@ import java.util.stream.Collectors;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-
     // Erros de validação dos campos (DTOs com @Valid)
     public ResponseEntity<ErrorResponse> handleValidationException(MethodArgumentNotValidException ex) {
-        List<String> errors = ex.getBindingResult().getFieldErrors().stream()
-                .map(error -> error.getField() + ": " + error.getDefaultMessage())
-                .collect(Collectors.toList());
+        List<String> errors = ex.getBindingResult().getFieldErrors().stream().map(error -> error.getField() + ": " + error.getDefaultMessage()).collect(Collectors.toList());
 
-        ErrorResponse response = new ErrorResponse(
-                HttpStatus.BAD_REQUEST.value(),
-                "Validation error",
-                errors
-        );
+        ErrorResponse response = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), "Validation error", errors);
 
         return ResponseEntity.badRequest().body(response);
     }
@@ -38,15 +31,9 @@ public class GlobalExceptionHandler {
     // Exceções de ConstraintViolation (por exemplo @RequestParam/@PathVariable inválidos)
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<ErrorResponse> handleConstraintViolation(ConstraintViolationException ex) {
-        List<String> errors = ex.getConstraintViolations().stream()
-                .map(cv -> cv.getPropertyPath() + ": " + cv.getMessage())
-                .collect(Collectors.toList());
+        List<String> errors = ex.getConstraintViolations().stream().map(cv -> cv.getPropertyPath() + ": " + cv.getMessage()).collect(Collectors.toList());
 
-        ErrorResponse response = new ErrorResponse(
-                HttpStatus.BAD_REQUEST.value(),
-                "Constraint violation",
-                errors
-        );
+        ErrorResponse response = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), "Constraint violation", errors);
 
         return ResponseEntity.badRequest().body(response);
     }
@@ -57,21 +44,14 @@ public class GlobalExceptionHandler {
 
         errors.add(ex.getMessage());
 
-        ErrorResponse response = new ErrorResponse(
-                HttpStatus.BAD_REQUEST.value(),
-                "Request parameter",
-                errors
-        );
+        ErrorResponse response = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), "Request parameter", errors);
 
         return ResponseEntity.badRequest().body(response);
     }
 
     @ExceptionHandler(IncomeException.class)
     public ResponseEntity<ErrorResponse> handleIncomeException(IncomeException ex) {
-        ErrorResponse response = new ErrorResponse(
-                ex.status.value(),
-                ex.getMessage()
-        );
+        ErrorResponse response = new ErrorResponse(ex.status.value(), ex.getMessage());
 
         return ResponseEntity.status(response.status()).body(response);
     }
@@ -79,10 +59,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleEntityNotFoundException(EntityNotFoundException ex) {
 
-        ErrorResponse response = new ErrorResponse(
-                HttpStatus.NOT_FOUND.value(),
-                ex.getMessage()
-        );
+        ErrorResponse response = new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage());
 
         return ResponseEntity.status(response.status()).body(response);
     }
@@ -90,10 +67,7 @@ public class GlobalExceptionHandler {
     // Exceções inesperadas (catch-all)
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleAllExceptions(Exception ex, WebRequest request) {
-        ErrorResponse response = new ErrorResponse(
-                HttpStatus.INTERNAL_SERVER_ERROR.value(),
-                "An unexpected error occurred"
-        );
+        ErrorResponse response = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), "An unexpected error occurred");
 
         ex.printStackTrace(); // Ou use logger
 

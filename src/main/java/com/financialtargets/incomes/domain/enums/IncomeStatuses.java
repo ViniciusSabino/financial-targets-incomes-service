@@ -8,7 +8,7 @@ import java.util.Optional;
 
 @Getter
 public enum IncomeStatuses {
-    PLANNED(1L, "Planejado" ),
+    PLANNED(1L, "Planejado"),
     EFFECTIVE(2L, "Efetivado");
 
     private final Long id;
@@ -28,7 +28,7 @@ public enum IncomeStatuses {
     public static String getLabelById(Long id) {
         Optional<IncomeStatuses> filtered = Arrays.stream(IncomeStatuses.values()).filter(i -> Objects.equals(i.getId(), id)).findFirst();
 
-        if(filtered.isPresent()) {
+        if (filtered.isPresent()) {
             return filtered.get().getLabel();
         }
 

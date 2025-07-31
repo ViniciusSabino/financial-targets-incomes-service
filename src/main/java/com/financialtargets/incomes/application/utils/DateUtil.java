@@ -5,12 +5,10 @@ import lombok.experimental.UtilityClass;
 
 import java.time.Instant;
 import java.time.LocalDate;
-import java.time.Month;
 import java.time.format.DateTimeFormatter;
 
 @UtilityClass
 public class DateUtil {
-
     public Instant getStartOfDayByDate(String localDate) {
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern(DateConstants.DEFAULT_DATE_FORMAT).withZone(DateConstants.DEFAULT_TIME_ZONE);
 
@@ -47,14 +45,6 @@ public class DateUtil {
         LocalDate firstDateOfMonth = LocalDate.parse(String.format("01/%s/%s", month, year), fmt);
         LocalDate lastDateOfMonth = firstDateOfMonth.withDayOfMonth(firstDateOfMonth.lengthOfMonth());
 
-        return lastDateOfMonth.atTime(23,59,59, 999).atZone(DateConstants.DEFAULT_TIME_ZONE).toInstant();
-    }
-
-    public boolean isCurrentMonth(String date) {
-        Month currentMonth = LocalDate.now().getMonth();
-
-        Month dateMonth = LocalDate.ofInstant(DateUtil.getStartOfDayByDate(date), DateConstants.DEFAULT_TIME_ZONE).getMonth();
-
-        return currentMonth.equals(dateMonth);
+        return lastDateOfMonth.atTime(23, 59, 59, 999).atZone(DateConstants.DEFAULT_TIME_ZONE).toInstant();
     }
 }

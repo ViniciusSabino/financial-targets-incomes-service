@@ -31,16 +31,17 @@ public class Income {
 
     private Instant updatedAt;
 
-    public Income() {}
+    public Income() { }
 
     public Income(IncomeCreateDTO incomeCreateDTO) {
         this.userId = incomeCreateDTO.userId();
         this.amount = incomeCreateDTO.amount();
         this.description = incomeCreateDTO.description();
-        this.setDate(incomeCreateDTO.date());
 
         this.createdAt = DateUtil.getNowGlobalDate();
         this.updatedAt = DateUtil.getNowGlobalDate();
+
+        this.setDate(incomeCreateDTO.date());
     }
 
     public void setDate(Instant date) {
@@ -50,11 +51,7 @@ public class Income {
     public void setDate(String date) {
         this.date = DateUtil.getStartOfDayByDate(date);
     }
-
-    public void setType(Long id) {
-        this.type = IncomeTypes.getTypeById(id);
-    }
-
+    
     public void setStatus(IncomeStatuses incomeStatus) {
         this.status = incomeStatus;
     }
