@@ -9,7 +9,7 @@ public record ExceptionResponse(
         List<String> errors
 ) {
     public ExceptionResponse(String message) {
-        this(status, message, LocalDateTime.now(), List.of());
+        this(message, LocalDateTime.now(), List.of());
     }
 
     public ExceptionResponse(String message, List<String> errors) {

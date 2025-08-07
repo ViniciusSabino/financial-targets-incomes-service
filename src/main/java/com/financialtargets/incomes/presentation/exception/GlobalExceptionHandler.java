@@ -1,6 +1,8 @@
 package com.financialtargets.incomes.presentation.exception;
 
+import com.financialtargets.incomes.domain.exception.BadRequestException;
 import com.financialtargets.incomes.domain.exception.IncomeException;
+import com.financialtargets.incomes.domain.exception.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
@@ -17,7 +19,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @ControllerAdvice
-public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
+public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ExceptionResponse> handleValidationException(MethodArgumentNotValidException ex) {
@@ -52,7 +54,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<ExceptionResponse> handleIncomeException(IncomeException ex) {
         ExceptionResponse response = new ExceptionResponse(ex.getMessage());
 
-        return ResponseEntity.status().body(response);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
@@ -60,7 +62,23 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
         ExceptionResponse response = new ExceptionResponse(ex.getMessage());
 
-        return ResponseEntity.status().body(response);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    }
+
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<ExceptionResponse> handleBadRequestException(BadRequestException ex) {
+
+        ExceptionResponse response = new ExceptionResponse(ex.getMessage());
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ExceptionResponse> handleResourceNotFoundException(ResourceNotFoundException ex) {
+
+        ExceptionResponse response = new ExceptionResponse(ex.getMessage());
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
 
     @ExceptionHandler(Exception.class)
