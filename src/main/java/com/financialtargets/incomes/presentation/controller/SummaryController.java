@@ -16,7 +16,7 @@ public interface SummaryController {
             description = "Get Summary Incomes",
             tags = {"Summary"},
             responses = {
-                    @ApiResponse(description = "OK", responseCode = "200", content = {
+                    @ApiResponse(description = "Success", responseCode = "200", content = {
                             @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
                                     schema = @Schema(implementation = IncomesSummaryDTO.class)
