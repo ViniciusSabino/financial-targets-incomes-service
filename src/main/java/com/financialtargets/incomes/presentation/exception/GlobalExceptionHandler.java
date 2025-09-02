@@ -5,6 +5,7 @@ import com.financialtargets.incomes.domain.exception.IncomeException;
 import com.financialtargets.incomes.domain.exception.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ConstraintViolationException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -12,12 +13,12 @@ import org.springframework.web.bind.MissingRequestValueException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -27,6 +28,8 @@ public class GlobalExceptionHandler {
 
         ExceptionResponse response = new ExceptionResponse("Validation error", errors);
 
+        log.warn("Method Argument Not Valid Exception: {}", errors);
+
         return ResponseEntity.badRequest().body(response);
     }
 
@@ -35,6 +38,8 @@ public class GlobalExceptionHandler {
         List<String> errors = ex.getConstraintViolations().stream().map(cv -> cv.getPropertyPath() + ": " + cv.getMessage()).collect(Collectors.toList());
 
         ExceptionResponse response = new ExceptionResponse("Constraint violation", errors);
+
+        log.warn("Constraint Violation: {}", errors);
 
         return ResponseEntity.badRequest().body(response);
     }
@@ -47,12 +52,16 @@ public class GlobalExceptionHandler {
 
         ExceptionResponse response = new ExceptionResponse("Request parameter", errors);
 
+        log.warn("Request Parameter: {}", ex.getMessage());
+
         return ResponseEntity.badRequest().body(response);
     }
 
     @ExceptionHandler(IncomeException.class)
     public ResponseEntity<ExceptionResponse> handleIncomeException(IncomeException ex) {
         ExceptionResponse response = new ExceptionResponse(ex.getMessage());
+
+        log.warn("Income Exception: {}", ex.getMessage());
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
@@ -62,6 +71,8 @@ public class GlobalExceptionHandler {
 
         ExceptionResponse response = new ExceptionResponse(ex.getMessage());
 
+        log.warn("Entity Not Found Exception: {}", ex.getMessage());
+
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
 
@@ -69,6 +80,8 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ExceptionResponse> handleBadRequestException(BadRequestException ex) {
 
         ExceptionResponse response = new ExceptionResponse(ex.getMessage());
+
+        log.warn("Bad Request Exception: {}", ex.getMessage());
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
@@ -78,6 +91,8 @@ public class GlobalExceptionHandler {
 
         ExceptionResponse response = new ExceptionResponse(ex.getMessage());
 
+        log.warn("Resource Not Found Exception: {}", ex.getMessage());
+
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
 
@@ -85,7 +100,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ExceptionResponse> handleAllExceptions(Exception ex, WebRequest request) {
         ExceptionResponse response = new ExceptionResponse("An unexpected error occurred");
 
-        ex.printStackTrace(); // Ou use logger
+        log.error("An unexpected error occurred: ", ex);
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
     }

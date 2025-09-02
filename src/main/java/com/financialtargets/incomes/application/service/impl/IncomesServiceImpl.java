@@ -19,7 +19,7 @@ import com.financialtargets.incomes.infrastructure.repository.IncomeStatusesRepo
 import com.financialtargets.incomes.infrastructure.repository.IncomeTypesRepository;
 import com.financialtargets.incomes.infrastructure.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -27,6 +27,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class IncomesServiceImpl implements IncomesService {
     private final UserRepository userRepository;
     private final AccountRepository accountRepository;
@@ -36,8 +37,9 @@ public class IncomesServiceImpl implements IncomesService {
 
     @Override
     public Income create(IncomeCreateDTO incomeCreateDTO) throws IncomeException {
-        if (!IncomeTypes.isValidType(incomeCreateDTO.type()))
-            throw new IncomeException("Tipo incorreto para a entrada");
+        if (!IncomeTypes.isValidType(incomeCreateDTO.type())) {
+            throw new IncomeException("Incorrect type for input");
+        }
 
         Income income = new Income(incomeCreateDTO);
 
@@ -61,15 +63,23 @@ public class IncomesServiceImpl implements IncomesService {
         entity.setUpdatedAt(income.getUpdatedAt());
         entity.setDescription(income.getDescription());
 
-        return incomeRepository.save(entity).toModel();
+        Income savedIncome = incomeRepository.save(entity).toModel();
+
+        log.info("Income saved successfully, incomeId: {}", savedIncome.getId());
+
+        return savedIncome;
     }
 
     @Override
-    public List<Income> listByMonth(String month, String year) {
+    public List<Income> listByMonth(Integer month, Integer year) throws Exception {
         Instant start = DateUtil.getStartDateByFilter(month, year);
         Instant end = DateUtil.getEndDateByFilter(month, year);
 
+        log.trace("Listing incomes for the period {} to {}", start, end);
+
         List<IncomesEntity> incomes = incomeRepository.findByDateBetween(start, end).stream().toList();
+
+        log.info("Listed {} incomes successfully", incomes.stream().toList().size());
 
         return IncomesMapper.toListModel(incomes);
     }

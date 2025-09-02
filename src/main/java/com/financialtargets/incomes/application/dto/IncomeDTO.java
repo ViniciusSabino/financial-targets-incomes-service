@@ -3,10 +3,15 @@ package com.financialtargets.incomes.application.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import org.springframework.hateoas.RepresentationModel;
 
+import java.io.Serializable;
+
+@EqualsAndHashCode(callSuper = true)
 @Builder
 @Data
-public class IncomeDTO {
+public class IncomeDTO extends RepresentationModel<IncomeDTO> implements Serializable {
         @JsonProperty("id")
         private Long id;
 

@@ -21,12 +21,9 @@ server:
     contextPath: /api
   info:
     app:
-      name: Financial Targets Incomes Service
+      name: financial-targets-incomes-service
       version: '0.0.1-SNAPSHOT'
 logging:
   level:
-    com.financialtargets.incomes: DEBUG
-spring-doc:
-  paths-to-match: /**
-  swagger-ui:
-    use-root-path: true
+    root: INFO
+    com.financialtargets: DEBUG

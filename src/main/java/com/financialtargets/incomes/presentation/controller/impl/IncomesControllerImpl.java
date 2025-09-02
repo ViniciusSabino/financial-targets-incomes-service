@@ -10,6 +10,7 @@ import com.financialtargets.incomes.presentation.controller.IncomesController;
 import jakarta.validation.Valid;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -25,12 +26,16 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/incomes", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
+@Slf4j
 public class IncomesControllerImpl implements IncomesController {
     private final IncomesService service;
 
     @PostMapping
     @Override
     public ResponseEntity<IncomeDTO> create(@RequestBody @Valid IncomeCreateDTO incomeCreateDTO) throws IncomeException {
+        log.trace("POST /incomes - Creating new income for user {}", incomeCreateDTO.userId());
+        log.debug("Request body: {}", incomeCreateDTO);
+
         Income income = service.create(incomeCreateDTO);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(IncomesMapper.toDTO(income));
@@ -38,8 +43,10 @@ public class IncomesControllerImpl implements IncomesController {
 
     @GetMapping
     @Override
-    public ResponseEntity<List<IncomeDTO>> listByMonth(@RequestParam @Valid @NonNull String month, @RequestParam @NonNull @Valid String year) {
-        List<Income> incomes = service.listByMonth(month, year);
+    public ResponseEntity<List<IncomeDTO>> listByMonth(@RequestParam @Valid @NonNull String month, @RequestParam @NonNull @Valid String year) throws Exception {
+        log.trace("GET /incomes - List Incomes by month: {} and year: {}", month, year);
+
+        List<Income> incomes = service.listByMonth(Integer.parseInt(month), Integer.parseInt(year));
 
         return ResponseEntity.status(HttpStatus.OK).body(IncomesMapper.toListDTO(incomes));
     }

@@ -8,6 +8,7 @@ import com.financialtargets.incomes.presentation.controller.SummaryController;
 import jakarta.validation.Valid;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -19,13 +20,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(value = "/summary", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
+@Slf4j
 public class SummaryControllerImpl implements SummaryController {
     private final SummaryService service;
 
     @GetMapping("/incomes")
     @Override
-    public ResponseEntity<IncomesSummaryDTO> getSummary(@RequestParam @Valid @NonNull String month, @RequestParam @NonNull @Valid String year) {
-        IncomesSummary incomesSummary = service.getSummary(month, year);
+    public ResponseEntity<IncomesSummaryDTO> getSummary(@RequestParam @Valid @NonNull String month, @RequestParam @NonNull @Valid String year) throws Exception {
+        log.trace("GET /summary/incomes - Get Summary incomes by month: {} and year: {}", month, year);
+
+        IncomesSummary incomesSummary = service.getSummary(Integer.parseInt(month), Integer.parseInt(year));
 
         return ResponseEntity.status(HttpStatus.OK).body(IncomesMapper.mapSummaryDTO(incomesSummary));
     }

@@ -28,5 +28,5 @@ public interface SummaryController {
                     @ApiResponse(description = "Internal Server Error", responseCode = "500", content = @Content)
             }
     )
-    ResponseEntity<IncomesSummaryDTO> getSummary(String month, String year);
+    ResponseEntity<IncomesSummaryDTO> getSummary(String month, String year) throws Exception;
 }

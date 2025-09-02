@@ -51,5 +51,5 @@ public interface IncomesController {
                     @ApiResponse(description = "Internal Server Error", responseCode = "500", content = @Content)
             }
     )
-    ResponseEntity<List<IncomeDTO>> listByMonth(String month, String year);
+    ResponseEntity<List<IncomeDTO>> listByMonth(String month, String year) throws Exception;
 }
