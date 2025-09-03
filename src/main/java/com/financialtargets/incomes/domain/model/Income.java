@@ -6,6 +6,7 @@ import com.financialtargets.incomes.domain.enums.IncomeTypes;
 import com.financialtargets.incomes.application.dto.IncomeCreateDTO;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 
 @Data
@@ -21,7 +22,7 @@ public class Income {
 
     private IncomeStatuses status;
 
-    private Float amount;
+    private BigDecimal amount;
 
     private Instant date;
 

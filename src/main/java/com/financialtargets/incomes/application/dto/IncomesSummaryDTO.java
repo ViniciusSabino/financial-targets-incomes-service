@@ -7,6 +7,7 @@ import lombok.EqualsAndHashCode;
 import org.springframework.hateoas.RepresentationModel;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -16,13 +17,13 @@ public class IncomesSummaryDTO extends RepresentationModel<IncomesSummaryDTO> im
     String totalExpected;
 
     @JsonProperty("totalExpectedValue")
-    Float totalExpectedValue;
+    BigDecimal totalExpectedValue;
 
     @JsonProperty("totalReceived")
     String totalReceived;
 
     @JsonProperty("totalReceivedValue")
-    Float totalReceivedValue;
+    BigDecimal totalReceivedValue;
 
     @JsonProperty("countExpected")
     Integer countExpected;

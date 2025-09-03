@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import org.hibernate.validator.constraints.Length;
 
+import java.math.BigDecimal;
+
 public record IncomeCreateDTO(
         @NotNull
         @Positive
@@ -24,7 +26,7 @@ public record IncomeCreateDTO(
         @NotNull
         @Positive
         @JsonProperty("amount")
-        Float amount,
+        BigDecimal amount,
 
         @NotNull
         @JsonProperty("date")

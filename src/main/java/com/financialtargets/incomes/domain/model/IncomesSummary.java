@@ -2,12 +2,14 @@ package com.financialtargets.incomes.domain.model;
 
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 @Data
 public class IncomesSummary {
 
-    private Float totalExpected;
+    private BigDecimal totalExpected;
 
-    private Float totalReceived;
+    private BigDecimal totalReceived;
 
     private Integer countExpected;
 

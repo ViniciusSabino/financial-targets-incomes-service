@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.List;
 
@@ -35,10 +36,10 @@ public class SummaryServiceImpl implements SummaryService {
         IncomesSummary incomesSummary = new IncomesSummary();
 
         incomesSummary.setCountExpected(expectedIncomes.size());
-        incomesSummary.setTotalExpected(expectedIncomes.stream().reduce(0.0F, (total, income) -> total + income.getAmount(), Float::sum));
+        incomesSummary.setTotalExpected(expectedIncomes.stream().reduce(new BigDecimal(0), (total, income) -> total.add(income.getAmount()), BigDecimal::add));
 
         incomesSummary.setCountReceived(receivedIncomes.size());
-        incomesSummary.setTotalReceived(receivedIncomes.stream().reduce(0.0F, (total, income) -> total + income.getAmount(), Float::sum));
+        incomesSummary.setTotalReceived(receivedIncomes.stream().reduce(new BigDecimal(0), (total, income) -> total.add(income.getAmount()), BigDecimal::add));
 
         return incomesSummary;
     }

@@ -15,6 +15,7 @@ import jakarta.persistence.TemporalType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 
 @NoArgsConstructor
@@ -43,7 +44,7 @@ public class IncomesEntity {
     private IncomeStatusesEntity incomeStatus;
 
     @Column(name = "amount", nullable = false)
-    private Float amount;
+    private BigDecimal amount;
 
     @Column(name = "date", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
