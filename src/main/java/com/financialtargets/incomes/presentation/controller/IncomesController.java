@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.checkerframework.checker.units.qual.C;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
@@ -34,6 +35,19 @@ public interface IncomesController {
             }
     )
     ResponseEntity<IncomeDTO> create(IncomeCreateDTO incomeCreateDTO) throws IncomeException;
+
+    @Operation(summary = "Delete a Income",
+            description = "Delete a Income",
+            tags = {"Incomes"},
+            responses = {
+                    @ApiResponse(description = "Success", responseCode = "200", content = @Content),
+                    @ApiResponse(description = "Bad Request", responseCode = "400", content = @Content),
+                    @ApiResponse(description = "Unauthorized", responseCode = "401", content = @Content),
+                    @ApiResponse(description = "Not Found", responseCode = "404", content = @Content),
+                    @ApiResponse(description = "Internal Server Error", responseCode = "500", content = @Content)
+            }
+    )
+    ResponseEntity<Void> delete(String id);
 
     @Operation(summary = "List Incomes by month and year parameter",
             description = "List Incomes by month and year parameter",

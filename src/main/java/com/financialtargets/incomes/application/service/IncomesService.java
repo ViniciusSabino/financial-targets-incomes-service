@@ -9,5 +9,7 @@ import java.util.List;
 public interface IncomesService {
     Income create(IncomeCreateDTO incomeCreateDTO) throws IncomeException;
 
+    void delete(Long id);
+
     List<Income> listByMonth(Integer month, Integer year) throws Exception;
 }

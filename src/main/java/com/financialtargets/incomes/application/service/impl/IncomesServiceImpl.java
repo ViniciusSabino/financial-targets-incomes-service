@@ -71,6 +71,13 @@ public class IncomesServiceImpl implements IncomesService {
     }
 
     @Override
+    public void delete(Long id) {
+        incomeRepository.deleteById(id);
+
+        log.info("Income delete successfully, incomeId: {}", id);
+    }
+
+    @Override
     public List<Income> listByMonth(Integer month, Integer year) throws Exception {
         Instant start = DateUtil.getStartDateByFilter(month, year);
         Instant end = DateUtil.getEndDateByFilter(month, year);
