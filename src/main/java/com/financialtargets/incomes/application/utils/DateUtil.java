@@ -7,18 +7,19 @@ import lombok.experimental.UtilityClass;
 import java.time.DateTimeException;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @UtilityClass
 public class DateUtil {
-    public Instant getStartOfDayByDate(String localDate) {
-        DateTimeFormatter fmt = DateTimeFormatter.ofPattern(DateConstants.DEFAULT_DATE_FORMAT).withZone(DateConstants.DEFAULT_TIME_ZONE);
+    public Instant createDateTime(String isoDate) {
+        LocalDateTime ldt = LocalDateTime.parse(isoDate);
 
-        return LocalDate.parse(localDate, fmt).atStartOfDay(DateConstants.DEFAULT_TIME_ZONE).toInstant();
+        return ldt.atZone(DateConstants.DEFAULT_TIME_ZONE).toInstant();
     }
 
-    public Instant getNowGlobalDate() {
-        return Instant.now().atZone(DateConstants.DEFAULT_TIME_ZONE).toInstant();
+    public Instant now() {
+        return Instant.now();
     }
 
     public String formatDate(Instant date) {

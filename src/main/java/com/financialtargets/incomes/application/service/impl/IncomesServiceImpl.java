@@ -43,25 +43,18 @@ public class IncomesServiceImpl implements IncomesService {
 
         Income income = new Income(incomeCreateDTO);
 
-        income.setStatus(DateUtil.getNowGlobalDate().isBefore(income.getDate()) ? IncomeStatuses.PLANNED : IncomeStatuses.EFFECTIVE);
-
-        UsersEntity usersEntity = userRepository.getReferenceById(incomeCreateDTO.userId());
-        AccountEntity accountEntity = accountRepository.getReferenceById(incomeCreateDTO.accountId());
-        IncomeTypesEntity incomeTypesEntity = incomeTypesRepository.getReferenceById(incomeCreateDTO.type());
-        IncomeStatusesEntity incomeStatusesEntity = incomeStatusesRepository.getReferenceById(income.getStatus().getId());
-
         IncomesEntity entity = new IncomesEntity();
-
-        entity.setUser(usersEntity);
-        entity.setAccount(accountEntity);
-        entity.setIncomeType(incomeTypesEntity);
-        entity.setIncomeStatus(incomeStatusesEntity);
 
         entity.setAmount(income.getAmount());
         entity.setDate(income.getDate());
         entity.setCreatedAt(income.getCreatedAt());
         entity.setUpdatedAt(income.getUpdatedAt());
         entity.setDescription(income.getDescription());
+
+        entity.setUser(userRepository.getReferenceById(incomeCreateDTO.userId()));
+        entity.setAccount(accountRepository.getReferenceById(incomeCreateDTO.accountId()));
+        entity.setIncomeType(incomeTypesRepository.getReferenceById(incomeCreateDTO.type()));
+        entity.setIncomeStatus(incomeStatusesRepository.getReferenceById(income.getStatus().getId()));
 
         Income savedIncome = incomeRepository.save(entity).toModel();
 

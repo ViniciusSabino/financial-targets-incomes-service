@@ -1,13 +1,11 @@
 package com.financialtargets.incomes.domain.mapper;
 
-import com.financialtargets.incomes.application.dto.IncomesSummaryDTO;
 import com.financialtargets.incomes.application.utils.AmountUtil;
 import com.financialtargets.incomes.application.utils.DateUtil;
 import com.financialtargets.incomes.domain.enums.IncomeStatuses;
 import com.financialtargets.incomes.domain.enums.IncomeTypes;
-import com.financialtargets.incomes.application.dto.IncomeDTO;
+import com.financialtargets.incomes.application.dto.IncomeResponseDTO;
 import com.financialtargets.incomes.domain.model.Income;
-import com.financialtargets.incomes.domain.model.IncomesSummary;
 import com.financialtargets.incomes.infrastructure.entitiy.IncomesEntity;
 import lombok.experimental.UtilityClass;
 
@@ -15,7 +13,6 @@ import java.util.List;
 
 @UtilityClass
 public class IncomesMapper {
-
     public Income toModel(IncomesEntity entity) {
         Income income = new Income();
 
@@ -37,8 +34,8 @@ public class IncomesMapper {
         return incomesEntityList.stream().map(IncomesMapper::toModel).toList();
     }
 
-    public IncomeDTO toDTO(Income income) {
-        return IncomeDTO.builder()
+    public IncomeResponseDTO toResponse(Income income) {
+        return IncomeResponseDTO.builder()
                 .id(income.getId())
                 .userId(income.getUserId())
                 .accountName(income.getAccountName())
@@ -52,18 +49,7 @@ public class IncomesMapper {
                 .build();
     }
 
-    public List<IncomeDTO> toListDTO(List<Income> incomes) {
-        return incomes.stream().map(IncomesMapper::toDTO).toList();
-    }
-
-    public IncomesSummaryDTO mapSummaryDTO(IncomesSummary incomesSummary) {
-        return IncomesSummaryDTO.builder()
-                .countExpected(incomesSummary.getCountExpected())
-                .totalExpected(AmountUtil.formatAmount(incomesSummary.getTotalExpected()))
-                .totalExpectedValue(incomesSummary.getTotalExpected())
-                .countReceived(incomesSummary.getCountReceived())
-                .totalReceived(AmountUtil.formatAmount(incomesSummary.getTotalReceived()))
-                .totalReceivedValue(incomesSummary.getTotalReceived())
-                .build();
+    public List<IncomeResponseDTO> toListResponse(List<Income> incomes) {
+        return incomes.stream().map(IncomesMapper::toResponse).toList();
     }
 }

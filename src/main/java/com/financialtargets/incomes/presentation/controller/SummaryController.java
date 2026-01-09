@@ -1,6 +1,7 @@
 package com.financialtargets.incomes.presentation.controller;
 
-import com.financialtargets.incomes.application.dto.IncomesSummaryDTO;
+import com.financialtargets.incomes.application.dto.IncomesSummaryResponseDTO;
+import com.financialtargets.incomes.presentation.exception.ExceptionResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -19,14 +20,34 @@ public interface SummaryController {
                     @ApiResponse(description = "Success", responseCode = "200", content = {
                             @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = IncomesSummaryDTO.class)
+                                    schema = @Schema(implementation = IncomesSummaryResponseDTO.class)
                             )
                     }),
-                    @ApiResponse(description = "Bad Request", responseCode = "400", content = @Content),
-                    @ApiResponse(description = "Unauthorized", responseCode = "401", content = @Content),
-                    @ApiResponse(description = "Not Found", responseCode = "404", content = @Content),
-                    @ApiResponse(description = "Internal Server Error", responseCode = "500", content = @Content)
+                    @ApiResponse(description = "Bad Request", responseCode = "400", content = {
+                            @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = ExceptionResponse.class)
+                            )
+                    }),
+                    @ApiResponse(description = "Unauthorized", responseCode = "401", content = {
+                            @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = ExceptionResponse.class)
+                            )
+                    }),
+                    @ApiResponse(description = "Not Found", responseCode = "404", content = {
+                            @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = ExceptionResponse.class)
+                            )
+                    }),
+                    @ApiResponse(description = "Internal Server Error", responseCode = "500", content = {
+                            @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = ExceptionResponse.class)
+                            )
+                    })
             }
     )
-    ResponseEntity<IncomesSummaryDTO> getSummary(String month, String year) throws Exception;
+    ResponseEntity<IncomesSummaryResponseDTO> getSummary(String month, String year) throws Exception;
 }

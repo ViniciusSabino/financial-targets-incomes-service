@@ -1,8 +1,8 @@
 package com.financialtargets.incomes.presentation.controller.impl;
 
-import com.financialtargets.incomes.application.dto.IncomesSummaryDTO;
+import com.financialtargets.incomes.application.dto.IncomesSummaryResponseDTO;
 import com.financialtargets.incomes.application.service.SummaryService;
-import com.financialtargets.incomes.domain.mapper.IncomesMapper;
+import com.financialtargets.incomes.domain.mapper.SummaryMapper;
 import com.financialtargets.incomes.domain.model.IncomesSummary;
 import com.financialtargets.incomes.presentation.controller.SummaryController;
 import jakarta.validation.Valid;
@@ -26,11 +26,11 @@ public class SummaryControllerImpl implements SummaryController {
 
     @GetMapping("/incomes")
     @Override
-    public ResponseEntity<IncomesSummaryDTO> getSummary(@RequestParam @Valid @NonNull String month, @RequestParam @NonNull @Valid String year) throws Exception {
+    public ResponseEntity<IncomesSummaryResponseDTO> getSummary(@RequestParam @Valid @NonNull String month, @RequestParam @NonNull @Valid String year) throws Exception {
         log.trace("GET /summary/incomes - Get Summary incomes by month: {} and year: {}", month, year);
 
         IncomesSummary incomesSummary = service.getSummary(Integer.parseInt(month), Integer.parseInt(year));
 
-        return ResponseEntity.status(HttpStatus.OK).body(IncomesMapper.mapSummaryDTO(incomesSummary));
+        return ResponseEntity.status(HttpStatus.OK).body(SummaryMapper.mapSummaryResponse(incomesSummary));
     }
 }

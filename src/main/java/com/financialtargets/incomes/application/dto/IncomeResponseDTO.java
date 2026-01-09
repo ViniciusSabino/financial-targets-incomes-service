@@ -11,7 +11,7 @@ import java.io.Serializable;
 @EqualsAndHashCode(callSuper = true)
 @Builder
 @Data
-public class IncomeDTO extends RepresentationModel<IncomeDTO> implements Serializable {
+public class IncomeResponseDTO extends RepresentationModel<IncomeResponseDTO> implements Serializable {
         @JsonProperty("id")
         private Long id;
 

@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Builder
-public class IncomesSummaryDTO extends RepresentationModel<IncomesSummaryDTO> implements Serializable {
+public class IncomesSummaryResponseDTO extends RepresentationModel<IncomesSummaryResponseDTO> implements Serializable {
     @JsonProperty("totalExpected")
     String totalExpected;
 

@@ -26,7 +26,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ExceptionResponse> handleValidationException(MethodArgumentNotValidException ex) {
         List<String> errors = ex.getBindingResult().getFieldErrors().stream().map(error -> error.getField() + ": " + error.getDefaultMessage()).collect(Collectors.toList());
 
-        ExceptionResponse response = new ExceptionResponse("Validation error", errors);
+        ExceptionResponse response = new ExceptionResponse("Validation error", errors, HttpStatus.BAD_REQUEST.toString());
 
         log.warn("Method Argument Not Valid Exception: {}", errors);
 
@@ -37,7 +37,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ExceptionResponse> handleConstraintViolation(ConstraintViolationException ex) {
         List<String> errors = ex.getConstraintViolations().stream().map(cv -> cv.getPropertyPath() + ": " + cv.getMessage()).collect(Collectors.toList());
 
-        ExceptionResponse response = new ExceptionResponse("Constraint violation", errors);
+        ExceptionResponse response = new ExceptionResponse("Constraint violation", errors, HttpStatus.BAD_REQUEST.toString());
 
         log.warn("Constraint Violation: {}", errors);
 
@@ -50,7 +50,7 @@ public class GlobalExceptionHandler {
 
         errors.add(ex.getMessage());
 
-        ExceptionResponse response = new ExceptionResponse("Request parameter", errors);
+        ExceptionResponse response = new ExceptionResponse("Request parameter", errors, HttpStatus.BAD_REQUEST.toString());
 
         log.warn("Request Parameter: {}", ex.getMessage());
 
@@ -59,7 +59,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(IncomeException.class)
     public ResponseEntity<ExceptionResponse> handleIncomeException(IncomeException ex) {
-        ExceptionResponse response = new ExceptionResponse(ex.getMessage());
+        ExceptionResponse response = new ExceptionResponse(ex.getMessage(), HttpStatus.BAD_REQUEST.toString());
 
         log.warn("Income Exception: {}", ex.getMessage());
 
@@ -69,7 +69,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<ExceptionResponse> handleEntityNotFoundException(EntityNotFoundException ex) {
 
-        ExceptionResponse response = new ExceptionResponse(ex.getMessage());
+        ExceptionResponse response = new ExceptionResponse(ex.getMessage(), HttpStatus.BAD_REQUEST.toString());
 
         log.warn("Entity Not Found Exception: {}", ex.getMessage());
 
@@ -79,7 +79,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BadRequestException.class)
     public ResponseEntity<ExceptionResponse> handleBadRequestException(BadRequestException ex) {
 
-        ExceptionResponse response = new ExceptionResponse(ex.getMessage());
+        ExceptionResponse response = new ExceptionResponse(ex.getMessage(), HttpStatus.BAD_REQUEST.toString());
 
         log.warn("Bad Request Exception: {}", ex.getMessage());
 
@@ -89,7 +89,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ExceptionResponse> handleResourceNotFoundException(ResourceNotFoundException ex) {
 
-        ExceptionResponse response = new ExceptionResponse(ex.getMessage());
+        ExceptionResponse response = new ExceptionResponse(ex.getMessage(), HttpStatus.BAD_REQUEST.toString());
 
         log.warn("Resource Not Found Exception: {}", ex.getMessage());
 
@@ -98,7 +98,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ExceptionResponse> handleAllExceptions(Exception ex, WebRequest request) {
-        ExceptionResponse response = new ExceptionResponse("An unexpected error occurred");
+        ExceptionResponse response = new ExceptionResponse("An unexpected error occurred", HttpStatus.INTERNAL_SERVER_ERROR.toString());
 
         log.error("An unexpected error occurred: ", ex);
 
