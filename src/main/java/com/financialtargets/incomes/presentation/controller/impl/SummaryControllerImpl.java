@@ -1,9 +1,7 @@
 package com.financialtargets.incomes.presentation.controller.impl;
 
 import com.financialtargets.incomes.application.dto.IncomesSummaryResponseDTO;
-import com.financialtargets.incomes.application.service.SummaryService;
-import com.financialtargets.incomes.domain.mapper.SummaryMapper;
-import com.financialtargets.incomes.domain.model.IncomesSummary;
+import com.financialtargets.incomes.application.usecase.summary.GetSummaryUseCase;
 import com.financialtargets.incomes.presentation.controller.SummaryController;
 import jakarta.validation.Valid;
 import lombok.NonNull;
@@ -22,15 +20,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @Slf4j
 public class SummaryControllerImpl implements SummaryController {
-    private final SummaryService service;
+    private final GetSummaryUseCase getSummaryUseCase;
 
     @GetMapping("/incomes")
     @Override
     public ResponseEntity<IncomesSummaryResponseDTO> getSummary(@RequestParam @Valid @NonNull String month, @RequestParam @NonNull @Valid String year) throws Exception {
         log.trace("GET /summary/incomes - Get Summary incomes by month: {} and year: {}", month, year);
 
-        IncomesSummary incomesSummary = service.getSummary(Integer.parseInt(month), Integer.parseInt(year));
+        IncomesSummaryResponseDTO incomesSummary = getSummaryUseCase.byPeriod(month,year);
 
-        return ResponseEntity.status(HttpStatus.OK).body(SummaryMapper.mapSummaryResponse(incomesSummary));
+        return ResponseEntity.status(HttpStatus.OK).body(incomesSummary);
     }
 }

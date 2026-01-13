@@ -1,9 +1,9 @@
 package com.financialtargets.incomes.presentation.controller.impl;
 
-import com.financialtargets.incomes.application.service.IncomesService;
+import com.financialtargets.incomes.application.usecase.incomes.CreateIncomeUseCase;
+import com.financialtargets.incomes.application.usecase.incomes.DeleteIncomeUseCase;
+import com.financialtargets.incomes.application.usecase.incomes.ListingIncomeUseCase;
 import com.financialtargets.incomes.domain.exception.IncomeException;
-import com.financialtargets.incomes.domain.mapper.IncomesMapper;
-import com.financialtargets.incomes.domain.model.Income;
 import com.financialtargets.incomes.application.dto.IncomeCreateDTO;
 import com.financialtargets.incomes.application.dto.IncomeResponseDTO;
 import com.financialtargets.incomes.presentation.controller.IncomesController;
@@ -30,7 +30,9 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class IncomesControllerImpl implements IncomesController {
-    private final IncomesService service;
+    private final CreateIncomeUseCase createIncomeUseCase;
+    private final DeleteIncomeUseCase deleteIncomeUseCase;
+    private final ListingIncomeUseCase listingIncomeUseCase;
 
     @PostMapping
     @Override
@@ -38,9 +40,9 @@ public class IncomesControllerImpl implements IncomesController {
         log.trace("POST /incomes - Creating new income for user {}", incomeCreateDTO.userId());
         log.debug("Request body: {}", incomeCreateDTO);
 
-        Income income = service.create(incomeCreateDTO);
+        IncomeResponseDTO income = createIncomeUseCase.create(incomeCreateDTO);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(IncomesMapper.toResponse(income));
+        return ResponseEntity.status(HttpStatus.CREATED).body(income);
     }
 
     @DeleteMapping("/{id}")
@@ -48,7 +50,7 @@ public class IncomesControllerImpl implements IncomesController {
     public ResponseEntity<Void> delete(@PathVariable("id") String id) {
         log.trace("DELETE /incomes - Deleting a income for id {}", id);
 
-        service.delete(Long.valueOf(id));
+        deleteIncomeUseCase.delete(Long.valueOf(id));
 
         return ResponseEntity.status(HttpStatus.OK).build();
     }
@@ -58,8 +60,8 @@ public class IncomesControllerImpl implements IncomesController {
     public ResponseEntity<List<IncomeResponseDTO>> listByMonth(@RequestParam @Valid @NonNull String month, @RequestParam @NonNull @Valid String year) throws Exception {
         log.trace("GET /incomes - List Incomes by month: {} and year: {}", month, year);
 
-        List<Income> incomes = service.listByMonth(Integer.parseInt(month), Integer.parseInt(year));
+        List<IncomeResponseDTO> incomes = listingIncomeUseCase.byPeriod(month, year);
 
-        return ResponseEntity.status(HttpStatus.OK).body(IncomesMapper.toListResponse(incomes));
+        return ResponseEntity.status(HttpStatus.OK).body(incomes);
     }
 }

@@ -1,7 +1,7 @@
 package com.financialtargets.incomes.domain.mapper;
 
 import com.financialtargets.incomes.application.dto.IncomesSummaryResponseDTO;
-import com.financialtargets.incomes.application.utils.AmountUtil;
+import com.financialtargets.incomes.domain.utils.AmountUtil;
 import com.financialtargets.incomes.domain.model.IncomesSummary;
 import lombok.experimental.UtilityClass;
 

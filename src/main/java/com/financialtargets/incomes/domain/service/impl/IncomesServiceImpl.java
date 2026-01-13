@@ -1,28 +1,22 @@
-package com.financialtargets.incomes.application.service.impl;
+package com.financialtargets.incomes.domain.service.impl;
 
-import com.financialtargets.incomes.application.service.IncomesService;
-import com.financialtargets.incomes.application.utils.DateUtil;
-import com.financialtargets.incomes.domain.enums.IncomeStatuses;
+import com.financialtargets.incomes.domain.model.DateFilter;
+import com.financialtargets.incomes.domain.service.IncomesService;
 import com.financialtargets.incomes.domain.enums.IncomeTypes;
 import com.financialtargets.incomes.domain.exception.IncomeException;
 import com.financialtargets.incomes.domain.mapper.IncomesMapper;
-import com.financialtargets.incomes.application.dto.IncomeCreateDTO;
 import com.financialtargets.incomes.domain.model.Income;
-import com.financialtargets.incomes.infrastructure.entitiy.AccountEntity;
-import com.financialtargets.incomes.infrastructure.entitiy.IncomeStatusesEntity;
-import com.financialtargets.incomes.infrastructure.entitiy.IncomeTypesEntity;
 import com.financialtargets.incomes.infrastructure.entitiy.IncomesEntity;
-import com.financialtargets.incomes.infrastructure.entitiy.UsersEntity;
 import com.financialtargets.incomes.infrastructure.repository.AccountRepository;
 import com.financialtargets.incomes.infrastructure.repository.IncomeRepository;
 import com.financialtargets.incomes.infrastructure.repository.IncomeStatusesRepository;
 import com.financialtargets.incomes.infrastructure.repository.IncomeTypesRepository;
 import com.financialtargets.incomes.infrastructure.repository.UserRepository;
+import com.financialtargets.incomes.infrastructure.repository.specification.IncomeSpecification;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
 import java.util.List;
 
 @Service
@@ -36,13 +30,14 @@ public class IncomesServiceImpl implements IncomesService {
     private final IncomeRepository incomeRepository;
 
     @Override
-    public Income create(IncomeCreateDTO incomeCreateDTO) throws IncomeException {
-        if (!IncomeTypes.isValidType(incomeCreateDTO.type())) {
+    public void validIncomeType(Long type) throws IncomeException {
+        if (!IncomeTypes.isValidType(type)) {
             throw new IncomeException("Incorrect type for input");
         }
+    }
 
-        Income income = new Income(incomeCreateDTO);
-
+    @Override
+    public IncomesEntity buildIncomeEntity(Income income) {
         IncomesEntity entity = new IncomesEntity();
 
         entity.setAmount(income.getAmount());
@@ -51,16 +46,21 @@ public class IncomesServiceImpl implements IncomesService {
         entity.setUpdatedAt(income.getUpdatedAt());
         entity.setDescription(income.getDescription());
 
-        entity.setUser(userRepository.getReferenceById(incomeCreateDTO.userId()));
-        entity.setAccount(accountRepository.getReferenceById(incomeCreateDTO.accountId()));
-        entity.setIncomeType(incomeTypesRepository.getReferenceById(incomeCreateDTO.type()));
+        entity.setUser(userRepository.getReferenceById(income.getUserId()));
+        entity.setAccount(accountRepository.getReferenceById(income.getAccountId()));
+        entity.setIncomeType(incomeTypesRepository.getReferenceById(income.getType().getId()));
         entity.setIncomeStatus(incomeStatusesRepository.getReferenceById(income.getStatus().getId()));
 
-        Income savedIncome = incomeRepository.save(entity).toModel();
+        return entity;
+    }
 
-        log.info("Income saved successfully, incomeId: {}", savedIncome.getId());
+    @Override
+    public Income saveIncome(IncomesEntity entity) {
+        Income income = incomeRepository.save(entity).toModel();
 
-        return savedIncome;
+        log.info("Income saved successfully, incomeId: {}", income.getId());
+
+        return income;
     }
 
     @Override
@@ -71,13 +71,10 @@ public class IncomesServiceImpl implements IncomesService {
     }
 
     @Override
-    public List<Income> listByMonth(Integer month, Integer year) throws Exception {
-        Instant start = DateUtil.getStartDateByFilter(month, year);
-        Instant end = DateUtil.getEndDateByFilter(month, year);
+    public List<Income> listByDate(DateFilter filter) throws Exception {
+        log.trace("Listing incomes for the period {} to {}", filter.getStartDate(), filter.getEndDate());
 
-        log.trace("Listing incomes for the period {} to {}", start, end);
-
-        List<IncomesEntity> incomes = incomeRepository.findByDateBetween(start, end).stream().toList();
+        List<IncomesEntity> incomes = incomeRepository.findAll(IncomeSpecification.byFilter(filter)).stream().toList();
 
         log.info("Listed {} incomes successfully", incomes.stream().toList().size());
 

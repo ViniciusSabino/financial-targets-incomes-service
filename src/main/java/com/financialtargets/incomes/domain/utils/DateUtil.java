@@ -1,4 +1,4 @@
-package com.financialtargets.incomes.application.utils;
+package com.financialtargets.incomes.domain.utils;
 
 import com.financialtargets.incomes.domain.constants.DateConstants;
 import com.financialtargets.incomes.domain.exception.BadRequestException;
@@ -34,11 +34,11 @@ public class DateUtil {
         return fmt.format(date);
     }
 
-    public Instant getStartDateByFilter(Integer month, Integer year) throws Exception {
+    public Instant getStartDateByFilter(String month, String year) throws Exception {
         try {
             DateTimeFormatter fmt = DateTimeFormatter.ofPattern(DateConstants.DEFAULT_DATE_FORMAT).withZone(DateConstants.DEFAULT_TIME_ZONE);
 
-            String adjustedMonth = month.toString().length() < 2 ? "0" + month : month.toString();
+            String adjustedMonth = month.length() < 2 ? "0" + month : month;
 
             LocalDate firstDateOfMonth = LocalDate.parse(String.format("01/%s/%s", adjustedMonth, year), fmt);
 
@@ -50,11 +50,11 @@ public class DateUtil {
         }
     }
 
-    public Instant getEndDateByFilter(Integer month, Integer year) throws Exception {
+    public Instant getEndDateByFilter(String month, String year) throws Exception {
         try {
             DateTimeFormatter fmt = DateTimeFormatter.ofPattern(DateConstants.DEFAULT_DATE_FORMAT).withZone(DateConstants.DEFAULT_TIME_ZONE);
 
-            String adjustedMonth = month.toString().length() < 2 ? "0" + month : month.toString();
+            String adjustedMonth = month.length() < 2 ? "0" + month : month;
 
             LocalDate firstDateOfMonth = LocalDate.parse(String.format("01/%s/%s", adjustedMonth, year), fmt);
             LocalDate lastDateOfMonth = firstDateOfMonth.withDayOfMonth(firstDateOfMonth.lengthOfMonth());

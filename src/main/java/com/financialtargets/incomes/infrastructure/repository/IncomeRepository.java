@@ -2,10 +2,8 @@ package com.financialtargets.incomes.infrastructure.repository;
 
 import com.financialtargets.incomes.infrastructure.entitiy.IncomesEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.stereotype.Repository;
 
-import java.time.Instant;
-import java.util.List;
-
-public interface IncomeRepository extends JpaRepository<IncomesEntity, Long> {
-    List<IncomesEntity> findByDateBetween(Instant dateStart, Instant dateEnd);
-}
+@Repository
+public interface IncomeRepository extends JpaRepository<IncomesEntity, Long>, JpaSpecificationExecutor<IncomesEntity> { }

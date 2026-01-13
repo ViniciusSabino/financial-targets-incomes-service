@@ -1,6 +1,6 @@
 package com.financialtargets.incomes.domain.model;
 
-import com.financialtargets.incomes.application.utils.DateUtil;
+import com.financialtargets.incomes.domain.utils.DateUtil;
 import com.financialtargets.incomes.domain.enums.IncomeStatuses;
 import com.financialtargets.incomes.domain.enums.IncomeTypes;
 import com.financialtargets.incomes.application.dto.IncomeCreateDTO;
@@ -11,9 +11,9 @@ import java.time.Instant;
 
 @Data
 public class Income {
-
     private Long id;
     private Long userId;
+    private Long accountId;
     private String accountName;
     private IncomeTypes type;
     private IncomeStatuses status;
@@ -23,11 +23,11 @@ public class Income {
     private Instant createdAt;
     private Instant updatedAt;
 
-    public Income() {
-    }
+    public Income() {}
 
     public Income(IncomeCreateDTO incomeCreateDTO) {
         this.userId = incomeCreateDTO.userId();
+        this.accountId = incomeCreateDTO.accountId();
         this.amount = incomeCreateDTO.amount();
         this.description = incomeCreateDTO.description();
 

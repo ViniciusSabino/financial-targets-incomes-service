@@ -1,4 +1,4 @@
-package com.financialtargets.incomes.application.utils;
+package com.financialtargets.incomes.domain.utils;
 
 import lombok.experimental.UtilityClass;
 

@@ -1,7 +1,7 @@
 package com.financialtargets.incomes.domain.mapper;
 
-import com.financialtargets.incomes.application.utils.AmountUtil;
-import com.financialtargets.incomes.application.utils.DateUtil;
+import com.financialtargets.incomes.domain.utils.AmountUtil;
+import com.financialtargets.incomes.domain.utils.DateUtil;
 import com.financialtargets.incomes.domain.enums.IncomeStatuses;
 import com.financialtargets.incomes.domain.enums.IncomeTypes;
 import com.financialtargets.incomes.application.dto.IncomeResponseDTO;
