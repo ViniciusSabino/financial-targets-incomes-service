@@ -1,13 +1,13 @@
-package com.financialtargets.incomes.domain.mapper;
+package com.financialtargets.incomes.application.mapper;
 
 import com.financialtargets.incomes.application.dto.IncomesSummaryResponseDTO;
 import com.financialtargets.incomes.domain.utils.AmountUtil;
 import com.financialtargets.incomes.domain.model.IncomesSummary;
-import lombok.experimental.UtilityClass;
+import org.springframework.stereotype.Component;
 
-@UtilityClass
+@Component
 public class SummaryMapper {
-    public IncomesSummaryResponseDTO mapSummaryResponse(IncomesSummary incomesSummary) {
+    public IncomesSummaryResponseDTO toResponse(IncomesSummary incomesSummary) {
         return IncomesSummaryResponseDTO.builder()
                 .countExpected(incomesSummary.getCountExpected())
                 .totalExpected(AmountUtil.formatAmount(incomesSummary.getTotalExpected()))

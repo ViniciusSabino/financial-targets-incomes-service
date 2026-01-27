@@ -1,7 +1,5 @@
 package com.financialtargets.incomes.infrastructure.entitiy;
 
-import com.financialtargets.incomes.domain.mapper.IncomesMapper;
-import com.financialtargets.incomes.domain.model.Income;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -60,8 +58,4 @@ public class IncomesEntity {
     @Column(name = "updated_at", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Instant updatedAt;
-
-    public Income toModel() {
-        return IncomesMapper.toModel(this);
-    }
 }

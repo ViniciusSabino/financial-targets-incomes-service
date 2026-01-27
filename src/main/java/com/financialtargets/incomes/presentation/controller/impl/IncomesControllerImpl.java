@@ -1,8 +1,8 @@
 package com.financialtargets.incomes.presentation.controller.impl;
 
-import com.financialtargets.incomes.application.usecase.incomes.CreateIncomeUseCase;
-import com.financialtargets.incomes.application.usecase.incomes.DeleteIncomeUseCase;
-import com.financialtargets.incomes.application.usecase.incomes.ListingIncomeUseCase;
+import com.financialtargets.incomes.application.usecase.CreateIncomeUseCase;
+import com.financialtargets.incomes.application.usecase.DeleteIncomeUseCase;
+import com.financialtargets.incomes.application.usecase.ListingIncomeUseCase;
 import com.financialtargets.incomes.domain.exception.IncomeException;
 import com.financialtargets.incomes.application.dto.IncomeCreateDTO;
 import com.financialtargets.incomes.application.dto.IncomeResponseDTO;

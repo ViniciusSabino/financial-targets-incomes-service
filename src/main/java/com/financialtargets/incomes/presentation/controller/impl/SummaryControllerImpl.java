@@ -1,7 +1,7 @@
 package com.financialtargets.incomes.presentation.controller.impl;
 
 import com.financialtargets.incomes.application.dto.IncomesSummaryResponseDTO;
-import com.financialtargets.incomes.application.usecase.summary.GetSummaryUseCase;
+import com.financialtargets.incomes.application.usecase.GetSummaryUseCase;
 import com.financialtargets.incomes.presentation.controller.SummaryController;
 import jakarta.validation.Valid;
 import lombok.NonNull;

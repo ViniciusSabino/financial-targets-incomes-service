@@ -6,4 +6,4 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface IncomeRepository extends JpaRepository<IncomesEntity, Long>, JpaSpecificationExecutor<IncomesEntity> { }
+public interface IncomeJpaRepository extends JpaRepository<IncomesEntity, Long>, JpaSpecificationExecutor<IncomesEntity> { }

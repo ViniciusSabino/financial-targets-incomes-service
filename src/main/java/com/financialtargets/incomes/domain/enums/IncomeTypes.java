@@ -34,10 +34,4 @@ public enum IncomeTypes {
         return filtered.map(IncomeTypes::getLabel).orElse(null);
 
     }
-
-    public static boolean isValidType(Long type) {
-        Optional<IncomeTypes> findType = Arrays.stream(IncomeTypes.values()).filter(i -> getTypeById(type) == i).findFirst();
-
-        return findType.isPresent();
-    }
 }
